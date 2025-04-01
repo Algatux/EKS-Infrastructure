@@ -32,7 +32,7 @@ jobs:
     needs: prepare
     uses: ./.github/workflows/tofu.yml
     with:
-      tfvar_path: "${{ github.workspace }}/cluster1/cluster.tfvars"
+      tfvar_path: "${{ env.GITHUB_WORKSPACE }}/cluster1/cluster.tfvars"
       tfstate_name: cluster1.tfstate
     secrets: inherit
 
@@ -40,6 +40,6 @@ jobs:
     needs: prepare
     uses: ./.github/workflows/tofu.yml
     with:
-      tfvar_path: "${{ github.workspace }}/cluster2/cluster.tfvars"
+      tfvar_path: "${{ env.GITHUB_WORKSPACE }}/cluster2/cluster.tfvars"
       tfstate_name: cluster2.tfstate
     secrets: inherit
