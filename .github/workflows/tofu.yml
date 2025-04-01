@@ -59,6 +59,12 @@ jobs:
         with:
           name: ${{ inputs.ref_name }}_plan
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE }}
+          aws-region: us-east-1
+
       - name: Install OpenTofu
         uses: opentofu/setup-opentofu@v1
         with:
