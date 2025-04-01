@@ -18,9 +18,9 @@ provider "aws" {
 
 resource "aws_subnet" "test-subnet" {
   vpc_id     = var.target_vpc
-  cidr_block = "172.31.48.0/20"
+  cidr_block = var.subnet_cidr
 
   tags = {
-    Name = "Main"
+    Name = var.cluster_name
   }
 }

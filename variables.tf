@@ -14,3 +14,8 @@ variable "cluster_name" {
   type = string
   description = "The cluster name"
 }
+
+variable "subnet_cidr" {
+  type = string
+  description = "Subnet CIDR"
+}
