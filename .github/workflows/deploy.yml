@@ -8,16 +8,16 @@ permissions:
   contents: read
 
 jobs:
-  tofu-deploy-cluster-1:
+  cluster-1:
     uses: ./.github/workflows/tofu.yml
     with:
       tfvar_path: cluster1/cluster.tfvars
-      tfstate_name: cluster1.tfstate
+      ref_name: cluster1
     secrets: inherit
 
-  tofu-deploy-cluster-2:
+  cluster-2:
     uses: ./.github/workflows/tofu.yml
     with:
       tfvar_path: cluster2/cluster.tfvars
-      tfstate_name: cluster2.tfstate
+      ref_name: cluster2
     secrets: inherit

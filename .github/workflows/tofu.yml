@@ -7,13 +7,13 @@ on:
         type: string
         description: 'Path to the cluster `tfvar` file'
         required: true
-      tfstate_name:
+      ref_name:
         type: string
-        description: 'Name of the tfstate filename'
+        description: 'Reference name'
         required: true
 
 jobs:
-  tofu-plan-apply:
+  tofu-plan:
     runs-on: ubuntu-latest
     environment: deploy
     steps:
@@ -35,13 +35,28 @@ jobs:
           tofu_version: 1.9.0
 
       - name: Initialize OpenTofu
-        run: tofu init -var-file ${{ github.workspace }}/${{ inputs.tfvar_path }} -var 'tfstate_name=${{ inputs.tfstate_name }}'
+        run: tofu init -var-file ${{ github.workspace }}/${{ inputs.tfvar_path }} -var 'tfstate_name=${{ inputs.ref_name }}.tfstate'
 
       - name: Validate OpenTofu
-        run: tofu validate -var-file ${{ github.workspace }}/${{ inputs.tfvar_path }} -var 'tfstate_name=${{ inputs.tfstate_name }}'
+        run: tofu validate -var-file ${{ github.workspace }}/${{ inputs.tfvar_path }} -var 'tfstate_name=${{ inputs.ref_name }}.tfstate'
 
       - name: Run OpenTofu Plan
-        run: tofu plan -var-file ${{ github.workspace }}/${{ inputs.tfvar_path }} -var 'tfstate_name=${{ inputs.tfstate_name }}' -out=${{ inputs.tfstate_name }}.tfplan
+        run: tofu plan -var-file ${{ github.workspace }}/${{ inputs.tfvar_path }} -var 'tfstate_name=${{ inputs.ref_name }}.tfstate' -out=${{ inputs.ref_name }}.tfplan
+
+      - name: Upload planf for ${{ inputs.ref_name }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.ref_name }}_plan
+          path: ${{ inputs.ref_name }}.tfplan
+
+  tofu-apply:
+    runs-on: ubuntu-latest
+    environment: deploy
+    steps:
+      - name: Upload planf for ${{ inputs.ref_name }}
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.ref_name }}_plan
 
       - name: Apply OpenTofu Plan
-        run: tofu apply -auto-approve ${{ inputs.tfstate_name }}.tfplan
+        run: tofu apply -auto-approve ${{ inputs.ref_name }}.tfplan
