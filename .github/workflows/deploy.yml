@@ -13,4 +13,5 @@ jobs:
     uses: ./.github/workflows/tofu.yml
     with:
       tfvar_path: 'cluster/cluster.tfvars'
+    secrets: inherit
 
