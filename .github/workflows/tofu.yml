@@ -9,7 +9,7 @@ on:
         required: true
 
 jobs:
-  terraform:
+  tofu-plan-apply:
     runs-on: ubuntu-latest
     environment: deploy
     steps:
@@ -38,5 +38,3 @@ jobs:
 
       - name: Apply OpenTofu Plan
         run: tofu apply -auto-approve tfplan
-        environment:
-          name: manual
