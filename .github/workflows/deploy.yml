@@ -28,6 +28,10 @@ jobs:
       - name: Verify authentication
         run: aws sts get-caller-identity
 
+      - name: Debug GitHub workspace
+        run:
+          "echo Workspace: `${{ github.workspace }}`"
+
   tofu-deploy-cluster-1:
     needs: prepare
     uses: ./.github/workflows/tofu.yml
