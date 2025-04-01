@@ -7,7 +7,7 @@ terraform {
   }
   backend "s3" {
     bucket = "algatux-opentofu-states"
-    key    = "/states/eks-infrastructure.tfstate"
+    key    = "/states/eks-infrastructure/${var.tfstate_name}"
     region = "eu-west-1"
   }
 }

@@ -19,3 +19,8 @@ variable "subnet_cidr" {
   type = string
   description = "Subnet CIDR"
 }
+
+variable "tfstate_name" {
+  type = string
+  description = "TFState filename"
+}

@@ -7,6 +7,10 @@ on:
         type: string
         description: 'Path to the cluster `tfvar` file'
         required: true
+      tfstate_name:
+        type: string
+        description: 'Name of the tfstate filename'
+        required: true
 
 jobs:
   tofu-plan-apply:
@@ -28,13 +32,13 @@ jobs:
           tofu_version: 1.9.0
 
       - name: Initialize OpenTofu
-        run: tofu init -var-file ${{ inputs.tfvar_path }}
+        run: tofu init
 
       - name: Validate OpenTofu
-        run: tofu validate -var-file ${{ inputs.tfvar_path }}
+        run: tofu validate -var-file ${{ inputs.tfvar_path }} -var 'tfstate_name=${{ inputs.tfstate_name }}'
 
       - name: Run OpenTofu Plan
-        run: tofu plan -var-file ${{ inputs.tfvar_path }} -out=tfplan
+        run: tofu plan -var-file ${{ inputs.tfvar_path }} -var 'tfstate_name=${{ inputs.tfstate_name }}' -out=tfplan
 
       - name: Apply OpenTofu Plan
         run: tofu apply -auto-approve tfplan
