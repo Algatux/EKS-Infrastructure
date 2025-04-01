@@ -59,5 +59,10 @@ jobs:
         with:
           name: ${{ inputs.ref_name }}_plan
 
+      - name: Install OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.9.0
+
       - name: Apply OpenTofu Plan
         run: tofu apply -auto-approve ${{ inputs.ref_name }}.tfplan
