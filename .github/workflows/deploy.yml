@@ -8,17 +8,20 @@ permissions:
   contents: read
 
 jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
   tofu-deploy-cluster-1:
     uses: ./.github/workflows/tofu.yml
     with:
       tfvar_path: './cluster1/cluster.tfvars'
       tfstate_name: 'cluster1.tfstate'
-    secrets: inherit
 
   tofu-deploy-cluster-2:
     uses: ./.github/workflows/tofu.yml
     with:
       tfvar_path: './cluster2/cluster.tfvars'
       tfstate_name: 'cluster2.tfstate'
-    secrets: inherit
-
