@@ -13,13 +13,10 @@ on:
         required: true
 
 jobs:
-  tofu-plan:
+  aws-login:
     runs-on: ubuntu-latest
     environment: deploy
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
@@ -28,6 +25,14 @@ jobs:
 
       - name: Verify authentication
         run: aws sts get-caller-identity
+
+  tofu-plan:
+    runs-on: ubuntu-latest
+    environment: deploy
+    needs: aws-login
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Install OpenTofu
         uses: opentofu/setup-opentofu@v1
@@ -50,6 +55,7 @@ jobs:
           path: ${{ inputs.ref_name }}.tfplan
 
   tofu-apply:
+    needs: tofu-plan
     runs-on: ubuntu-latest
     environment: deploy
     steps:
