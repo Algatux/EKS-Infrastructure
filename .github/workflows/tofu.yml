@@ -17,6 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: deploy
     steps:
+      - name: Debug GitHub workspace
+        run:
+          "echo Workspace: ${{ github.workspace }}"
+
       - name: Install OpenTofu
         uses: opentofu/setup-opentofu@v1
         with:
