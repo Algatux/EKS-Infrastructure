@@ -9,7 +9,6 @@ permissions:
 
 jobs:
   tofu-deploy-cluster-1:
-    environment: deploy
     uses: ./.github/workflows/tofu.yml
     with:
       tfvar_path: 'cluster/cluster.tfvars'
