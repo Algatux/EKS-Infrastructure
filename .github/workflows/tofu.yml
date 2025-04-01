@@ -1,0 +1,32 @@
+name: Tofu Apply Workflow
+
+on:
+  workflow_call:
+    inputs:
+      tfvar_path:
+        type: string
+        description: 'Path to the cluster `tfvar` file'
+        required: true
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.9.0
+
+      - name: Initialize OpenTofu
+        run: tofu init -var-file ${{ inputs.tfvar_path }}
+
+      - name: Validate OpenTofu
+        run: tofu validate -var-file ${{ inputs.tfvar_path }}
+
+      - name: Run OpenTofu Plan
+        run: tofu plan -var-file ${{ inputs.tfvar_path }} -out=tfplan
+
+      - name: Apply OpenTofu Plan
+        run: tofu apply -auto-approve tfplan
+        environment:
+          name: manual
