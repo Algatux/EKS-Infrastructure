@@ -25,11 +25,16 @@ jobs:
       - name: Initialize OpenTofu
         run: tofu init
 
+      - name: Debug GitHub workspace
+        run:
+          "echo Workspace: `${{ github.workspace }}`"
+
+
       - name: Validate OpenTofu
-        run: tofu validate -var-file ${{ inputs.tfvar_path }} -var 'tfstate_name=${{ inputs.tfstate_name }}'
+        run: tofu validate -var-file ${{ github.workspace }}/${{ inputs.tfvar_path }} -var 'tfstate_name=${{ inputs.tfstate_name }}'
 
       - name: Run OpenTofu Plan
-        run: tofu plan -var-file ${{ inputs.tfvar_path }} -var 'tfstate_name=${{ inputs.tfstate_name }}' -out=tfplan
+        run: tofu plan -var-file ${{ github.workspace }}/${{ inputs.tfvar_path }} -var 'tfstate_name=${{ inputs.tfstate_name }}' -out=tfplan
 
       - name: Apply OpenTofu Plan
         run: tofu apply -auto-approve tfplan
