@@ -11,6 +11,6 @@ jobs:
   tofu-deploy-cluster-1:
     uses: ./.github/workflows/tofu.yml
     with:
-      tfvar_path: 'cluster/cluster.tfvars'
+      tfvar_path: './cluster/cluster.tfvars'
     secrets: inherit
 
