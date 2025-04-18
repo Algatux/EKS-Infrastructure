@@ -1,0 +1,28 @@
+name: Tofu Apply Workflow
+
+on:
+  workflow_call:
+    inputs:
+      ref_name:
+        type: string
+        description: 'Reference name'
+        required: true
+
+jobs:
+  tofu-destroy:
+    runs-on: ubuntu-latest
+    environment: deploy
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE }}
+          aws-region: us-east-1
+
+      - name: Install OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.9.0
+
+      - name: Apply OpenTofu Plan
+        run: tofu destroy ${{ inputs.ref_name }}.tfstate
