@@ -1,4 +1,4 @@
-name: Tofu Apply Workflow
+name: Tofu Destroy Workflow
 
 on:
   workflow_call:

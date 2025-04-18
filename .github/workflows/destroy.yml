@@ -1,4 +1,4 @@
-name: EKS Infrastructure deploy
+name: EKS Infrastructure Destroy
 
 on:
   workflow_dispatch:
